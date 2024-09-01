@@ -62,7 +62,8 @@ cocPassword = os.getenv('cocPassword')
 
 # Finds Extensions with other commands
 initial_extensions = [
-                      'cogs.login_ext'
+                      'cogs.login_ext',
+                      'cogs.recourceTracker_ext'
                       ]
 
 # Coc Client Initilization
