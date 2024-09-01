@@ -1,5 +1,9 @@
 # Ignore everything in the directory /ignore
 /ignore
 
+# Ignores everything in the /Pycache Directory
+/cogs/__pycache__
+
+
 # Ignore the .env in the root dir
 .env
