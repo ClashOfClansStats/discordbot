@@ -27,9 +27,21 @@ SQLiteCursor = SQLiteConnect.cursor()
 
 # Set Up Schema for SQLite
 SQLiteConnect.execute('''
-                      CREATE TABLE IF NOT EXISTS PlayerTags (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                      CREATE TABLE IF NOT EXISTS PlayerTags (
+                      
+                      id INTEGER PRIMARY KEY AUTOINCREMENT, 
                       discordID TEXT NOT NULL,
+                      
                       PlayerTag TEXT NOT NULL
+                      )''')
+
+SQLiteConnect.execute('''
+                      CREATE TABLE IF NOT EXISTS ClanTags (
+
+                      id INTEGER PRIMARY KEY AUTOINCREMENT,
+                      discordID TEXT NOT NULL,
+                      ClanTag TEXT NOT NULL
+
                       )''')
 
 # Close connection to SQLite
@@ -49,7 +61,7 @@ cocEmail = os.getenv('cocEmail')
 cocPassword = os.getenv('cocPassword')
 
 # Finds Extensions with other commands
-initial_extensions = ['cogs.test_ext', 
+initial_extensions = [
                       'cogs.login_ext'
                       ]
 
