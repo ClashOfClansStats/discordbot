@@ -99,7 +99,7 @@ async def testcommand(interaction: discord.Interaction, clantag: str):
         await interaction.response.send_message(f"Please supply a proper tag", ephemeral=True)
         return
     else:
-
+        # Was planned to be implemented but was never added
         await interaction.response.send_message(f"You are using {playerClanTag}: {playerClan} as your selected clan!", ephemeral=True)
 # Autocomplete for option "clantag"
 @testcommand.autocomplete('clantag')
