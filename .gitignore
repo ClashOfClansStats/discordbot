@@ -3,7 +3,7 @@
 
 # Ignores everything in the /Pycache Directory
 /cogs/__pycache__
-
+/__pycache__
 
 # Ignore the .env in the root dir
 .env
