@@ -21,6 +21,20 @@ import schedule
 # for SQLite
 import sqlite3
 
+# Sets up SQLite
+SQLiteConnect = sqlite3.connect("Storage.db")
+SQLiteCursor = SQLiteConnect.cursor()
+
+# Set Up Schema for SQLite
+SQLiteConnect.execute('''
+                      CREATE TABLE IF NOT EXISTS PlayerTags (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                      discordID TEXT NOT NULL,
+                      PlayerTag TEXT NOT NULL
+                      )''')
+
+# Close connection to SQLite
+SQLiteConnect.close()
+
 # Sets intents for Bot
 intents = discord.Intents.default()
 intents.message_content = True
@@ -35,7 +49,9 @@ cocEmail = os.getenv('cocEmail')
 cocPassword = os.getenv('cocPassword')
 
 # Finds Extensions with other commands
-initial_extensions = ['cogs.testext']
+initial_extensions = ['cogs.test_ext', 
+                      'cogs.login_ext'
+                      ]
 
 # Coc Client Initilization
 async def cocClientInitizalize():
