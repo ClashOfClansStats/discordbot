@@ -31,9 +31,17 @@ class loginCog(commands.Cog):
             SQLiteCursor.execute("SELECT 1 FROM PlayerTags WHERE playerTag = ?", (tempTag,))
             result = SQLiteCursor.fetchone()
 
+            # Closes connection to SQLite
+            SQLiteCursor.close()
+
             if result:
                 await interaction.response.send_message(f"playerTag Already Exists for the tag **{tempTag}**", ephemeral=True)
             else:
+                # Reopens connection to SQLite
+                SQLiteConnect = sqlite3.connect("storage.db")
+                SQLiteCursor = SQLiteConnect.cursor()
+
+                # Adds PlayerTag to the database
                 SQLiteCursor.execute("INSERT INTO PlayerTags (discordID, playerTag) VALUES (?, ?)" , (interaction.user.id, tempTag))
                 SQLiteConnect.commit()
                 SQLiteConnect.close()
@@ -58,9 +66,17 @@ class loginCog(commands.Cog):
             SQLiteCursor.execute("SELECT 1 FROM PlayerTags WHERE playerTag = ?", (tempTag,))
             result = SQLiteCursor.fetchone()
 
+            # Closes connection to SQLite
+            SQLiteConnect.close()
+
             if not result:
                 await interaction.response.send_message(f"playerTag Does Not Exist for the tag **{tempTag}**", ephemeral=True)
             else:
+                # Reconnects to SQLite Database
+                SQLiteConnect = sqlite3.connect("storage.db")
+                SQLiteCursor = SQLiteConnect.cursor()
+
+                # Removes login for player tag
                 SQLiteCursor.execute("DELETE FROM PlayerTags WHERE playerTag = ?", (tempTag,))
                 SQLiteConnect.commit()
                 SQLiteConnect.close()
@@ -95,6 +111,8 @@ class loginCog(commands.Cog):
                 # Reopens connection to SQLite database
                 SQLiteConnect = sqlite3.connect("storage.db")
                 SQLiteCursor = SQLiteConnect.cursor()
+
+                # Adds ClanTag to the database
                 SQLiteCursor.execute("INSERT INTO ClanTags (discordID, ClanTag) VALUES (?, ?)" , (interaction.user.id, tempTag))
                 SQLiteConnect.commit()
                 SQLiteConnect.close()
@@ -119,9 +137,17 @@ class loginCog(commands.Cog):
             SQLiteCursor.execute("SELECT 1 FROM ClanTags WHERE ClanTag = ?", (tempTag,))
             result = SQLiteCursor.fetchone()
 
+            # Closes connection to SQLite
+            SQLiteConnect.close()
+            
             if not result:
                 await interaction.response.send_message(f"ClanTag Does Not Exist for the tag **{tempTag}**", ephemeral=True)
             else:
+                # Reconnects to SQLite Database
+                SQLiteConnect = sqlite3.connect("storage.db")
+                SQLiteCursor = SQLiteConnect.cursor()
+
+                # Removes login for clan tag
                 SQLiteCursor.execute("DELETE FROM ClanTags WHERE ClanTag = ?", (tempTag,))
                 SQLiteConnect.commit()
                 SQLiteConnect.close()
