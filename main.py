@@ -41,7 +41,6 @@ SQLiteConnect.execute('''
                       id INTEGER PRIMARY KEY AUTOINCREMENT,
                       discordID TEXT NOT NULL,
                       ClanTag TEXT NOT NULL
-
                       )''')
 
 # Close connection to SQLite
@@ -78,8 +77,8 @@ async def cocClientInitizalize():
 async def on_ready():
     print(f'Bot is ready as {bot.user}')
     try:
-        await bot.tree.sync()  # Sync the commands after the bot is ready
-        print("Commands synced successfully.")
+        synced = await bot.tree.sync()  # Sync the commands after the bot is ready
+        print(f'Commands synced successfully, synced {len(synced)} commands.')
     except Exception as e:
         print(f"Error syncing commands: {e}")
 
