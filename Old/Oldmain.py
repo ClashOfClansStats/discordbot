@@ -137,7 +137,6 @@ async def dailyfarmed(interaction: discord.Interaction):
     if result:
         player = await coc_client.get_player(player_tag=tempTag)
         print(f'Gathering info for: {player}')
-
         totalgathered = Oldfuncs.recourcesGathered(player=player, allAchievements=player.achievements)
 
         print(f'totalgathered: Gold: {totalgathered[0]} | Elixer: {totalgathered[1]}')
