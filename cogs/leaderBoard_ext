@@ -1,0 +1,77 @@
+import discord
+from discord.ext import tasks, commands
+from discord import app_commands
+
+import sqlite3
+import coc
+from coc import utils
+
+import os
+from dotenv import load_dotenv
+
+from table2ascii import table2ascii as t2a, PresetStyle
+
+import typing
+
+import datetime
+
+class leaderboardCog(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @app_commands.command(name="checkfarm")
+    async def dailyTask(self, Interaction: discord.Interaction, clantag: str):
+        await Interaction.response.defer()
+        # Gets the parent direcotry
+        currentDir = os.path.dirname(__file__)
+        tempPath = os.path.split(currentDir)[0]
+
+        # Load .env file
+        load_dotenv(dotenv_path=tempPath)
+
+        # Fetches login info
+        tempEmail = os.getenv('cocEmail')
+        tempPassword = os.getenv('cocPassword')
+
+        # Initializes coc client
+        coc_client=coc.Client()
+        await coc_client.login(email=tempEmail, password=tempPassword)
+        
+        # Gets clan info
+        clan = await coc_client.get_clan('#2QPUQUR9Y')
+
+        # Creates an empty array of player tags
+        playerTags = []
+        playerNames = []
+        async for player in clan.get_detailed_members():
+            playerTags.append(player.tag)
+            playerNames.append(player.name)
+
+        allGoldGathered = []
+        allElixerGathered = []
+        allDarkElixerGathered = []
+        for element in playerTags:
+            tempPlayer = await coc_client.get_player(element)
+            allAchievements = tempPlayer.achievements
+            acheivementValues = next((ach for ach in allAchievements if ach.name == "Gold Grab"), None)
+            goldGathered = acheivementValues.value
+            allGoldGathered.append(goldGathered)
+
+            acheivementValues = next((ach for ach in allAchievements if ach.name == "Elixir Escapade"), None)
+            elixirGathered = acheivementValues.value
+            allElixerGathered.append(elixirGathered)
+
+            acheivementValues = next((ach for ach in allAchievements if ach.name == "Heroic Heist"), None)
+            darkElixirGathered = acheivementValues.value
+            allDarkElixerGathered.append(darkElixirGathered)
+        
+        tableData = list(zip(playerNames, allGoldGathered, allElixerGathered, allDarkElixerGathered))
+
+        finalOutput = (t2a(
+        header=['Player Name', 'Gold Gathered', 'Elixer Gathered', 'Dark Elixer Gathered'],
+        body=tableData,
+        style=PresetStyle.ascii_borderless
+    ))
+
+        embed = discord.Embed(title="Clash of Clans", description=f'```{finalOutput}```', color=0x0000FF)
+        await Interaction.followup.send(embed=embed)
