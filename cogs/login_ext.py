@@ -12,6 +12,18 @@ class loginCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+
+    @app_commands.command(name="test")
+    async def test_command(self, interaction: discord.Interaction):
+        await interaction.response.defer()
+        testvar = "test"
+        embedTemp = discord.Embed(title="Hello World!",
+                                   description=f"{testvar}", 
+                                   color=0x0000FF,
+                                   )
+        
+        await interaction.followup.send("Hello World!", embed=embedTemp)
+
 # Add a base to your account
     @app_commands.command(name="clashaddbase")
     async def clashaddbase_command(self, interaction: discord.Interaction, playertag: str):
