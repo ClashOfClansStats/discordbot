@@ -9,6 +9,8 @@ from coc import utils
 import os
 from dotenv import load_dotenv
 
+from table2ascii import table2ascii as t2a, PresetStyle
+
 import typing
 
 import datetime
@@ -95,13 +97,14 @@ class loopCog(commands.Cog):
 
         # Creates an empty array of player tags
         playerTags = []
+        playerNames = []
         async for player in clan.get_detailed_members():
             playerTags.append(player.tag)
-        tempPlayerTags = playerTags
+            playerNames.append(player.name)
 
         allGoldGathered = []
         allElixerGathered = []
-        for element in tempPlayerTags:
+        for element in playerTags:
             tempPlayer = await coc_client.get_player(element)
             allAchievements = tempPlayer.achievements
             acheivementValues = next((ach for ach in allAchievements if ach.name == "Gold Grab"), None)
@@ -112,8 +115,7 @@ class loopCog(commands.Cog):
             elixirGathered = acheivementValues.value
             allElixerGathered.append(elixirGathered)
         
-        print (f'All Gold Gathered: {allGoldGathered}')
-        print (f'All Elixer Gathered: {allElixerGathered}')
+
 
 
 
